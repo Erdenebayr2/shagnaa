@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block content%}
+{%load static%}
+
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
+
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+	<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+      <div class="card-body">
+      <h4 class="card-title mb-4">Нэвтрэх</h4>
+      {% include "layout/alerts.html" %}
+      <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+			 <input type="email" class="form-control" placeholder="Нэьтрэх нэрээ оруулна уу" name="username">
+          </div>
+          <div class="form-group">
+			<input type="password" class="form-control" placeholder="Нэвтрэх нууц үгээ оруулна уу" name="password">
+          </div>
+          
+          <div class="form-group">
+          	<a href="#" class="float-right" style='color:rgb(216, 64, 90);'>Нууц үгээ мартсан?</a> 
+           
+          </div> 
+          <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block" style='background-color:rgb(216, 64, 90);border: 1px solid rgb(216, 64, 90);'> Нэвтрэх  </button>
+          </div>
+      </form>
+      </div> 
+    </div>
+
+     <p class="text-center mt-4">Шинэ хэрэглэгч бол? <a href="/register" style='color:rgb(216, 64, 90);'>Бүртгүүлэх</a></p>
+     <br><br>
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="section-footer border-top padding-y">
+	<div class="container">
+		<p class="float-md-right"> 
+			&copy Copyright 2019 All rights reserved
+		</p>
+		<p>
+			<a href="#">Terms and conditions</a>
+		</p>
+	</div><!-- //container -->
+</footer>
+<!-- ========================= FOOTER END // ========================= -->
+
+
+
+{%endblock%}

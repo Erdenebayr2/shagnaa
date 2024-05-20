@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+	.modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+	.modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; }
+	.close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+	.close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
+	.hidden { display: none; }
+	input { width: 100%; margin-bottom: 1%; }
+</style>
+
+<section class="section-content padding-y bg">
+	<div class="container">
+		<div class="card">
+			<div class="row no-gutters">
+				<aside class="col-md-6">
+					<article class="gallery-wrap">
+						<div class="img-big-wrap mainImage">
+							<a href="#"><img src="{{ single_product.images.url }}" /></a>
+						</div>
+					</article>
+					<ul class="thumb" style="list-style: none;">
+						{% for pg in product_gallery %}
+						<li>
+							<a href="{{ pg.image.url }}" target="mainImage">
+								<img width=100 height=100 src="{{ pg.image.url }}" />
+							</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</aside>
+				<main class="col-md-6 border-left">
+					<article class="content-body">
+						<h2 class="title">{{ single_product.product_name }}</h2>
+						<div class="mb-3">
+							<var class="price h4">{{ single_product.price }}.00₮</var>
+						</div>
+						<p>{{ single_product.description }}</p>
+						<hr>
+						<div class="row">
+							<div class="item-option-select"></div>
+						</div>
+						<hr>
+						{% if single_product.stock != 0 %}
+							{% if in_cart %}
+								<p class="btn btn-success" style='background-color: rgb(216, 64, 90); border: 1px solid rgb(216, 64, 90);'> <span class="text">Хадгалах</span> <i class="fas fa-shopping-cart"></i> </p>
+							{% else %}
+								<a href="#" class="btn btn-primary" style='background-color: rgb(216, 64, 90); border: 1px solid rgb(216, 64, 90);' onclick="openModal()"> <span class="text">Хүсэлт илгээх</span> <i class="fas fa-address-book"></i> </a>
+								{% if application_issuccess %}
+									<a href="{% url 'add_cart' single_product.id %}" class="btn btn-primary" style='background-color: rgb(216, 64, 90); border: 1px solid rgb(216, 64, 90);' onclick="openModal2()"> <span class="text">Гэрээ хийх</span> <i class="fas fa-book"></i> </a>
+									<div id="myModal" class="modal">
+										<div class="modal-content">
+											<span class="close" onclick="closeModal()">&times;</span>
+											<div class="header">
+												<h1>ОЛОН УЛСЫН ТЭЭВЭРТ АВТОМАШИН ТУРГЭСЛЭХ ГЭРЭЭ</h1>
+												<p>2024 оны 03 сарын 31-ний өдөр <br> Гэрээний дугаар: № 24/23 <br> Улаанбаатар хот</p>
+											</div>
+										
+											<div class="content">
+												<h2>Гэрээний талууд</h2>
+												<p><strong>"Шангаа" ХХК</strong> (5888889) - Гүйцгээгч</p>
+												<p><strong>Умсчидар огторой "НАРАНДУЛЯГ" ХХК</strong> (TR89030121) - Чадаач</p>
+										
+												<h3>Гэрээний нөхцөлүүд</h3>
+												<ol>
+													<li>БНХАУ-ын Эрээнхот Говоорс СҮХ-ний Линееж хот уртсан тээвэрлэх ажиллагааг тодорхойлно.</li>
+													<li>Тээврийн төлбөр 16,000,000 төгрөг байна, хуваарилах журам боловсруулна.</li>
+													<li>Тээврийн хугацаа, бараа бүтээгдэхүүний жагсаалт, гүйцэтгэлээр гэрээг үнэлнэ.</li>
+													<li>Тасалбарын зохион байгуулалт, тээвэрлэлтийн аюулгүй арга хэмжээ авна.</li>
+												</ol>
+										
+												<h3>Бусад нөхцөлүүд</h3>
+												<ul>
+													<li>Бүх холбогдох мэдээллийг хадгалах, хамгаалах үүрэг хүлээнэ.</li>
+													<li>Гэрээний хугацаа дууссаны дараа талууд үүссэн асуудлаар хариуцлага хүлээх.</li>
+												</ul>
+											</div>
+										
+											<div class="footer">
+												<table>
+													<tr>
+														<th>Тээвэрлэгчийн тал</th>
+														<th>Чадаачийн тал</th>
+													</tr>
+													<tr>
+														<td>"ШАНГАА" ХХК-ний Гүйцгээгч</td>
+														<td>"НАРАНДУЛЯГ" ХХК</td>
+													</tr>
+													<tr>
+														<td>Эдийн засагч: Батбилэг</td>
+														<td>РД: TR89030121</td>
+													</tr>
+													<tr>
+														<td>+976 88115755</td>
+														<td>+976 8814-3450</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+										
+									</div>
+								{% else %}
+									<a href="{% url 'add_cart' single_product.id %}" class="btn btn-primary" style='background-color: rgb(216, 64, 90); border: 1px solid rgb(216, 64, 90); opacity: 0.7' onclick='return false'> <span class="text">Гэрээ хийх</span> <i class="fas fa-book"></i> </a>
+								{% endif %}
+								<div id="myModal" class="modal">
+									<div class="modal-content">
+										<span class="close" onclick="closeModal()">&times;</span>
+										<div class="news" id="part1">
+											<h3 style="margin-top: 1%;">1. Жолоочийн мэдээлэл</h3>
+											<form method="post" action="{% url 'product_detail' category_slug=single_product.category.slug product_slug=single_product.slug %}" enctype="multipart/form-data">
+												{% csrf_token %}
+												{{ driver_form.as_p }}
+												{{ trailer_form.as_p }}
+												{{ trailer_file_form.as_p }}
+												<input type="submit" value="Илгээх">
+											</form>
+										</div>
+									</div>
+									
+								</div>
+							{% endif %}
+						{% else %}
+							<p class="text-danger">Олдсонгүй</p>
+						{% endif %}
+					</article>
+				</main>
+			</div>
+		</div>
+
+		<br>
+
+		{% comment %} <div class="row">
+			<div class="col-md-9">
+				<header class="section-heading">
+					<h3>Cэтгэгдэл</h3>
+				</header>
+
+				<article class="box mb-3">
+					<div class="icontext w-100">
+						<img src="{% static 'images/avatars/avatar1.jpg' %}" class="img-xs icon rounded-circle">
+						<div class="text">
+							<span class="date text-muted float-md-right">24.04.2020</span>
+							<h6 class="mb-1">Mike John</h6>
+						</div>
+					</div>
+					<div class="mt-3">
+						<p>йыбйыб бйыбый аыыбаыб аа ыбабы</p>
+					</div>
+				</article>
+			</div>
+		</div> {% endcomment %}
+	</div>
+</section>
+
+<script>
+	function openModal() {
+		document.getElementById("myModal").style.display = "block";
+	}
+	
+	function closeModal() {
+		document.getElementById("myModal").style.display = "none";
+	}
+	
+	function showPart2() {
+		document.getElementById("part1").classList.add("hidden");
+		document.getElementById("part2").classList.remove("hidden");
+	}
+	
+	function showPart1() {
+		document.getElementById("part2").classList.add("hidden");
+		document.getElementById("part1").classList.remove("hidden");
+	}
+	
+	function showPart3() {
+		const part1Form = document.getElementById("formPart1");
+		const part2Form = document.getElementById("formPart2");
+		const summary = document.getElementById("summary");
+	
+		if (!part1Form.checkValidity() || !part2Form.checkValidity()) {
+			alert("Бүх талбарыг бөглөнө үү");
+			return;
+		}
+	
+		summary.innerHTML = `
+			<h4>Жолоочийн мэдээлэл:</h4>
+			<p>Үнэмлэхний хүчинтэй хугацаа: ${part1Form.date_of_passport.value}</p>
+			<p>Лиценз дугаар: ${part1Form.licenseid.value}</p>
+	
+			<h4>Чиргүүлний мэдээлэл:</h4>
+			<p>Регистр дугаар: ${part2Form.register.value}</p>
+			<p>Тээврийн хэрэгслийн төрөл: ${part2Form.vehicletype.value}</p>
+			<p>Явах эд ангийн дугаар: ${part2Form.edangi.value}</p>
+			<p>Худалдааны тэмдэг эсвэл үйлдвэрлэгчийн нэр: ${part2Form.trademark_or_manufacturer.value}</p>
+			<p>Сертификатын дугаар: ${part2Form.certificate_number.value}</p>
+		`;
+	
+		document.getElementById("part2").classList.add("hidden");
+		document.getElementById("part3").classList.remove("hidden");
+	}
+	
+	function showPart2() {
+		document.getElementById("part3").classList.add("hidden");
+		document.getElementById("part2").classList.remove("hidden");
+	}
+</script>
+
+{% endblock %}

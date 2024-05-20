@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .wrapper {
+            display: flex;
+            width: 100%;
+        }
+        
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+        }
+        
+        .sidebar ul.components {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding:10px
+        }
+        
+        .sidebar ul li a:hover {
+            background: #575757;
+            text-decoration: none;
+            padding:10px
+        }
+        
+        .content {
+            width: 100%;
+            padding: 20px;
+            background: #f1f1f1;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            margin-left: -1%;
+            width:100%;
+            margin-top: -1%;
+            background: #fff;
+            box-shadow: 0px 4px 2px -2px gray;
+        }
+        
+        .container-fluid {
+            width: 100%;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .col {
+            flex: 1;
+            margin: 10px;
+        }
+        
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            margin-top: 0;
+        }
+        
+        .card a {
+            display: block;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        
+        .card button {
+            margin-right: 10px;
+        }
+        
+        .recent-actions .action {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        
+        .recent-actions .action p {
+            margin: 0;
+        }
+        
+        .recent-actions .action span {
+            display: block;
+            color: #888;
+            font-size: 0.9em;
+        }
+        button{
+            background:rgb(255, 77, 106);
+            color:white;
+            border:1px solid rgb(255, 77, 106);
+            padding:1%;
+            width:10%;
+            cursor:pointer
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="{% static 'logo.jpg' %}">
+                <h3>Shagnaa</h3>
+                <hr>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="{% url 'a' %}">Нүүр хуудас</a>
+                </li>
+                <li>
+                    <a href="{% url 'user' %}">Хэрэглэгч</a>
+                </li>
+                <li>
+                    <a href="{% url 'a' %}">Хүсэлт</a>
+                </li>
+                <li>
+                    <a href="{% url 'category' %}">Зарын төрөл</a> 
+                </li>
+                <li>
+                    <a href="{% url 'zar' %}">Зарууд</a>
+                </li>
+                <li>
+                    <a href="{% url 'a' %}">Чиргүүл</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="content">
+            <nav class="navbar">
+                <i class="fa fa-user" style='font-size:20px'></i>
+            </nav>
+            <div class="main-content">
+                <div class="container-fluid">
+                    <h2>Нүүр хуудас</h2>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <h3>Хэрэглэгчийн Бүртгэл</h3>
+                                <a href="{% url 'user' %}">Бүртгэл</a>
+                                <button style='width:50%'>Нэмэх</button>
+                            </div>
+                            <div class="card">
+                                <h3>Мэдээ бүртгэл</h3>
+                                <a href="{% url 'add_news'%}">Мэдээ</a>
+                                <button style='width:50%'>Нэмэх</button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <h3>Shagnaa вэб</h3>
+                                <a href="#">Хүсэлтийн жагсаалт</a>
+                                <a href="#">Ачааны төрөл</a>
+                                <a href="#">Зарын жагсаалт</a>
+                                <a href="#">Чиргүүлнүүд</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.querySelector('.sidebar');
+            const toggler = document.querySelector('.navbar-toggler-icon');
+        
+            toggler.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+            });
+        });
+        
+    </script>
+</body>
+</html>

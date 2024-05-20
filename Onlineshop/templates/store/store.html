@@ -1,0 +1,156 @@
+{%extends "base.html"%} {%block content%}
+{%load static%}
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page">Ачаа</h2>
+        
+    </div> <!-- container //  -->
+    </section>
+    <!-- ========================= SECTION INTRO END// ========================= -->
+    
+    <!-- ========================= SECTION CONTENT ========================= -->
+    <section class="section-content padding-y">
+    <div class="container">
+    
+    <div class="row">
+        <aside class="col-md-3">
+            
+    <div class="card">
+        <article class="filter-group">
+            <header class="card-header">
+                <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+                    <i class="icon-control fa fa-chevron-down" style='color:rgb(216, 64, 90);'></i>
+                    <h6 class="title" style='color:rgb(216, 64, 90);'>Ангилал</h6>
+                </a>
+            </header>
+            <div class="filter-content collapse show" id="collapse_1" style="">
+                <div class="card-body">
+                    
+                    <ul class="list-menu">
+                        {% for category in links %}
+                        <li><a href="{% url 'store' category.slug %}">{{category.category_name | upper}}</a></li>
+                        {% endfor %}
+                    </ul>
+    
+                </div> <!-- card-body.// -->
+            </div>
+        </article>
+        <article class="filter-group">
+            <header class="card-header">
+                <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+                    <i class="icon-control fa fa-chevron-down" style='color:rgb(216, 64, 90);'></i>
+                    <h6 class="title" style='color:rgb(216, 64, 90);'>Үнэ </h6>
+                </a>
+            </header>
+            <div class="filter-content collapse show" id="collapse_3" style="">
+                <div class="card-body">
+                    <form method="get" action="{% url 'search' %}">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Дээш</label>
+                                <select class="form-control" name="min_price">
+                                    <option value="1500000">1.500,000₮</option>
+                                    <option value="2500000">2.500,000₮</option>
+                                    <option value="3500000">3.500,000₮</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-right col-md-6">
+                                <label>Доош</label>
+                                <select class="form-control" name="max_price">
+                                    <option value="500000">500,000₮</option>
+                                    <option value="1000000">1.000,000₮</option>
+                                    <option value="1500000">1.500,000₮</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-block btn-primary" type="submit" style='background-color:rgb(216, 64, 90);border:1px solid rgb(216, 64, 90);'>Шүүж хайх</button>
+                        </div> <!-- form-row.// -->
+                    </form>
+                    
+                </div><!-- card-body.// -->
+            </div>
+        </article> <!-- filter-group .// -->
+        
+    </div> <!-- card.// -->
+    
+        </aside> <!-- col.// -->
+        <main class="col-md-9">
+    
+    <header class="border-bottom mb-4 pb-3">
+        {% if count == 1 %}
+        <span class="mr-md-auto">{{count}} зар олдлоо </span>
+        {% elif count > 1 %}
+        <span class="mr-md-auto">{{count}} зар  олдлоо </span>
+        {% else %}
+        <span class="mr-md-auto">{{count}} зар олдлоо</span>
+        {% endif %} 
+    </header><!-- sect-heading -->
+    
+    <div class="row">
+        {% if count > 0 %}
+        {%for product in products %}
+        <div class="col-md-4">
+            <figure class="card card-product-grid">
+                <div class="img-wrap"> 
+                    
+                    <a href="{% url 'product_detail' category_slug=product.category.slug product_slug=product.slug %}" ><img src="{{ product.images.url }}"></a>
+                    
+                </div> <!-- img-wrap.// -->
+                <figcaption class="info-wrap">
+                    <div class="fix-height">
+                        <a href="{% url 'product_detail' category_slug=product.category.slug product_slug=product.slug %}" class="title">{{product.product_name}}</a>
+                        <div class="price-wrap mt-2">
+                            <span class="price">{{product.price}}.00₮</span>
+                        </div> <!-- price-wrap.// -->
+                    </div>
+                    {%if product.stock != 0 %}
+                    <a href="{% url 'add_cart' product.id %}" class="btn btn-block btn-primary" style='background-color:rgb(216, 64, 90);border:1px solid rgb(216, 64, 90);'>Хадгалах </a>
+                    {%else%}
+                    <p class="btn btn-block btn-primary" style="background-color: red">Зар олдсонгүй </p>
+                    {%endif%}
+                </figcaption>
+            </figure>
+        </div> <!-- col.// -->
+        {%endfor%}
+        {% else %}
+        <h2 class="title-page">Хайлт илэрсэнгүй '{{keyword}}'</h2>
+        {%endif%}
+    </div> <!-- row end.// -->
+    
+    
+    
+    <nav class="mt-4" aria-label="Page navigation sample">
+        {% if products.has_other_pages %}
+        <ul class="pagination">
+            {%if products.has_previous %}
+            <li class="page-item"><a class="page-link"
+                href="?page={{products.previous_page_number}}" style='color:rgb(216, 64, 90);'>Буцах</a></li>
+            {%else%}
+            <li class="page-item disabled"><a class="page-link"
+                href="#">Буцах</a></li>
+            {%endif%}
+            {% for i in products.paginator.page_range %}
+            {%if products.number == i %}
+            <li class="page-item active"><a class="page-link" href="#" style='background-color:rgb(216, 64, 90);border: 1px solid rgb(216, 64, 90);'>{{i}}</a></li>
+            {%else%}
+            <li class="page-item"><a class="page-link" href="?page={{i}}" style='color:rgb(216, 64, 90);'>{{i}}</a></li>
+            {%endif%}
+            {%endfor%}
+            {%if products.has_next %}
+            <li class="page-item"><a class="page-link"
+                href="?page={{products.next_page_number}}" style='color:rgb(216, 64, 90);'>Дараагийн</a></li>
+            {%else%}
+            <li class="page-item disabled"><a class="page-link"
+                href="#">Дараагийн</a></li>
+            {%endif%}
+        </ul>
+        {% endif %}
+        
+    </nav>
+    
+        </main>
+    
+    </div>
+    
+    </div>
+    </section>
+{%endblock%}

@@ -1,0 +1,82 @@
+{%extends "base.html"%} {%block content%}
+{%load static%}
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page">Мэдээ</h2>
+        
+    </div>
+    </section>
+    <!-- ========================= SECTION INTRO END// ========================= -->
+    
+    <!-- ========================= SECTION CONTENT ========================= -->
+    <section class="section-content padding-y">
+    <div class="container">
+    
+    <div class="row">
+        <main class="col-md-9">
+    
+    <div class="row">
+        {% if news_items %}
+        {% for news in news_items %}
+        <div class="col-md-4">
+            <figure class="card card-product-grid">
+                <div class="img-wrap"> 
+                    
+                    <a href="#" ><img src="{{ news.image.url }}"></a>
+                    
+                </div>
+                <figcaption class="info-wrap">
+                    <div class="fix-height">
+                        <a href="#" class="title">{{ news.created_date }}</a>
+                        <div class="price-wrap mt-2">
+                            <span class="price" style='font-size:20px'>{{ news.title }}</span>
+                            <p>{{ news.description }}</p>
+                        </div>
+                    </div>
+                </figcaption>
+            </figure>
+        </div>
+        {%endfor%}
+        {% else %}
+        <h2 class="title-page">Хайлт илэрсэнгүй '{{keyword}}'</h2>
+        {%endif%}
+    </div>
+    
+    
+    
+    <nav class="mt-4" aria-label="Page navigation sample">
+        {% if products.has_other_pages %}
+        <ul class="pagination">
+            {%if products.has_previous %}
+            <li class="page-item"><a class="page-link"
+                href="?page={{products.previous_page_number}}" style='color:rgb(216, 64, 90);'>Буцах</a></li>
+            {%else%}
+            <li class="page-item disabled"><a class="page-link"
+                href="#">Буцах</a></li>
+            {%endif%}
+            {% for i in products.paginator.page_range %}
+            {%if products.number == i %}
+            <li class="page-item active"><a class="page-link" href="#" style='background-color:rgb(216, 64, 90);border: 1px solid rgb(216, 64, 90);'>{{i}}</a></li>
+            {%else%}
+            <li class="page-item"><a class="page-link" href="?page={{i}}" style='color:rgb(216, 64, 90);'>{{i}}</a></li>
+            {%endif%}
+            {%endfor%}
+            {%if products.has_next %}
+            <li class="page-item"><a class="page-link"
+                href="?page={{products.next_page_number}}" style='color:rgb(216, 64, 90);'>Дараагийн</a></li>
+            {%else%}
+            <li class="page-item disabled"><a class="page-link"
+                href="#">Дараагийн</a></li>
+            {%endif%}
+        </ul>
+        {% endif %}
+        
+    </nav>
+    
+        </main>
+    
+    </div>
+    
+    </div>
+    </section>
+{%endblock%}

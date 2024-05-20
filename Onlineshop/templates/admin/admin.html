@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application List</title>
+</head>
+<body>
+    <form method="post" action="{% url 'update_applications' %}">
+        {% csrf_token %}
+        {% for application in applications %}
+        <div>
+            <p>{{ application.driver.user.first_name }}</p>
+            <p>{{ application.driver.date_of_passport }}</p>
+            <p>{{ application.driver.licenseid }}</p>
+            <label for="issuccess_{{ application.id }}">Success:</label>
+            <input type="checkbox" name="issuccess_{{ application.id }}" id="issuccess_{{ application.id }}" {% if application.issuccess %}checked{% endif %}>
+        </div>
+        {% endfor %}
+        <button type="submit">Save Changes</button>
+    </form>
+    <a href="{% url 'a'%}">dd</a>
+</body>
+</html>
