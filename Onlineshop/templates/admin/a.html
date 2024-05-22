@@ -148,16 +148,13 @@
                     <a href="{% url 'user' %}">Хэрэглэгч</a>
                 </li>
                 <li>
-                    <a href="{% url 'a' %}">Хүсэлт</a>
-                </li>
-                <li>
-                    <a href="{% url 'category' %}">Зарын төрөл</a> 
+                    <a href="{% url 'request' %}">Хүсэлт</a>
                 </li>
                 <li>
                     <a href="{% url 'zar' %}">Зарууд</a>
                 </li>
                 <li>
-                    <a href="{% url 'a' %}">Чиргүүл</a>
+                    <a href="{% url 'add_news' %}">Мэдээ</a>
                 </li>
             </ul>
         </nav>
@@ -184,10 +181,9 @@
                         <div class="col">
                             <div class="card">
                                 <h3>Shagnaa вэб</h3>
-                                <a href="#">Хүсэлтийн жагсаалт</a>
-                                <a href="#">Ачааны төрөл</a>
-                                <a href="#">Зарын жагсаалт</a>
-                                <a href="#">Чиргүүлнүүд</a>
+                                <a href="{% url 'request' %}">Хүсэлтийн жагсаалт</a>
+                                <a href="{% url 'zar' %}">Зарын жагсаалт</a>
+                                <a href="{% url 'add_news' %}">Мэдээнүүд</a>
                             </div>
                         </div>
                     </div>

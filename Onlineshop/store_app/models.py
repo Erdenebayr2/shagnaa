@@ -67,3 +67,22 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+    
+class User_Request(models.Model):
+    dname = models.CharField(max_length=100)
+    dpass = models.CharField(max_length=100)
+    dletsence = models.CharField(max_length=100)
+    url1 = models.CharField(max_length=200)
+    def __str__ (self):
+        return self.dname
+
+class UserRequest_Truck(models.Model):
+    crd = models.CharField(max_length=100)
+    ctype = models.CharField(max_length=100)
+    cedangi = models.CharField(max_length=100)
+    cmadename = models.CharField(max_length=100)
+    ccefno = models.CharField(max_length=100)
+    url2 = models.CharField(max_length=200)
+    dpass = models.CharField(max_length=100)
+    def __str__ (self):
+        return self.crd

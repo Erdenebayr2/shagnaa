@@ -128,16 +128,13 @@
                     <a href="{% url 'user' %}">Хэрэглэгч</a>
                 </li>
                 <li>
-                    <a href="{% url 'a' %}">Хүсэлт</a>
-                </li>
-                <li>
-                    <a href="{% url 'category' %}">Зарын төрөл</a> 
+                    <a href="{% url 'request' %}">Хүсэлт</a>
                 </li>
                 <li>
                     <a href="{% url 'zar' %}">Зарууд</a>
                 </li>
                 <li>
-                    <a href="{% url 'a' %}">Чиргүүл</a>
+                    <a href="{% url 'add_news' %}">Мэдээ</a>
                 </li>
             </ul>
         </nav>
@@ -146,26 +143,39 @@
                 <i class="fa fa-user" style="font-size: 20px;"></i>
             </nav>
             <div class="main-content">
-                <div class="container" style='margin-top:1%'>
-                    <h2>Мэдээ Нэмэх</h2>
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="title">Гарчиг:</label>
-                            <input type="text" id="title" name="title" required>
+                <div class="container" style='margin-top:3%;overflow:scroll;height:700px'>
+                    <h2>Хүсэлтийн жагсаалт</h2>
+                    {% if news_items%}
+                        {% for news in news_items%}
+                        <div class="col-md-4" style='border:1px solid black;margin-bottom:2%'>
+                            <figure class="card card-product-grid">
+                                <h3>1. Хэрэглэгчийн мэдээлэл</h3>
+                                <div class="img-wrap"> 
+                                    <a href="#" ><img src="{{news.url1}}" width='20%'></a>
+                                </div>
+                                <figcaption class="info-wrap">
+                                    <div class="fix-height">
+                                        <b>Овог Нэр: </b><a href="#" style='color:black;text-decoration:none' class="title">{{news.dname}}</a>
+                                        <div class="price-wrap mt-2">
+                                            <b>Үнэмлэхний хүчинтэй хугацаа: </b> <span class="price" style='font-size:20px'>{{ news.dpass }}</span>
+                                            <p><b>Лиценз дугаар: </b>{{ news.dletsence }}</p>
+                                            <h3 style='margin-top:10%'>2. Чиргүүлний мэдээлэл</h3>
+                                            {% if context %}
+                                            {% with con=context.0 %}
+                                            <p><b>РД: </b>{{ con.crd }}</p>
+                                            <p><b>Тээврийн төрөл: </b>{{ con.ctype }}</p>
+                                            <p><b>Эд анги: </b>{{ con.cedangi }}</p>
+                                            <p><b>Худалдааны тэмдэг эсвэл үйлдвэрлэгчийн нэр: </b>{{ con.cmadename }}</p>
+                                            <p><b>Сефтиркатын дугаар: </b>{{ con.ccefno }}</p>
+                                            {% endwith %}
+                                        {% endif %}
+                                        </div>
+                                    </div>
+                                </figcaption>
+                            </figure>
                         </div>
-                        <div class="form-group">
-                            <label for="description">Тайлбар:</label>
-                            <textarea id="description" name="description" rows="4" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Зураг:</label>
-                            <input type="file" id="image" name="image" required>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit">Нэмэх</button>
-                        </div>
-                    </form>
+                        {%endfor%}
+                        {%endif%}
                 </div>
             </div>
         </div>

@@ -128,16 +128,13 @@
                     <a href="{% url 'user' %}">Хэрэглэгч</a>
                 </li>
                 <li>
-                    <a href="{% url 'a' %}">Хүсэлт</a>
-                </li>
-                <li>
-                    <a href="{% url 'category' %}">Зарын төрөл</a> 
+                    <a href="{% url 'request' %}">Хүсэлт</a>
                 </li>
                 <li>
                     <a href="{% url 'zar' %}">Зарууд</a>
                 </li>
                 <li>
-                    <a href="{% url 'a' %}">Чиргүүл</a>
+                    <a href="{% url 'add_news' %}">Мэдээ</a>
                 </li>
             </ul>
         </nav>
@@ -154,7 +151,7 @@
                             <figure class="card card-product-grid">
                                 <div class="img-wrap"> 
                                     
-                                    <a href="#" ><img src="{{ news.images.url }}" width='150px' height:'80px'></a>
+                                    <a href="#" ><img src="{{ news.images.url}}" width='150px' height:'80px'></a>
                                     
                                 </div>
                                 <figcaption class="info-wrap">
@@ -178,17 +175,27 @@
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="title">Гарчиг:</label>
-                            <input type="text" id="title" name="title" required>
+                            <label for="title">Зарын нэр:</label>
+                            <input type="text" id="title" name="zname" required>
                         </div>
                         <div class="form-group">
                             <label for="description">Тайлбар:</label>
-                            <textarea id="description" name="description" rows="4" required></textarea>
+                            <textarea id="description" name="ta_description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Үнэ:</label>
+                            <input type="text" id="title" name="price" required>
                         </div>
                         <div class="form-group">
                             <label for="image">Зураг:</label>
                             <input type="file" id="image" name="image" required>
                         </div>
+                        <label for="ztype">Зарын төрөл:</label>
+                        <select name="ztype" id="types" multiple>
+                            <option value="1">Хөргүүртэй</option>
+                            <option value="2">Хөргүүргүй</option>
+                            <option value="3">Эмзэг</option>
+                        </select>
                         <div class="form-group">
                             <button type="submit">Нэмэх</button>
                         </div>

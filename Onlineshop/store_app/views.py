@@ -4,6 +4,9 @@ from .models import *
 from accounts.models import Account
 from django.core.paginator import Paginator
 import sqlite3
+from django.db import transaction
+from django.views.decorators.http import require_http_methods
+from transliterate import translit
 from carts_app.models import CartItem
 from carts_app.views import _cart_id
 from django.db.models import Q
@@ -15,8 +18,12 @@ from django.core.files.storage import FileSystemStorage
 from .models import *
 from django.contrib import messages
 from .form import DriverForm, TrailerForm, TrailerFileForm, ApplicationForm
-from .models import Product, ImageGallery
+from .models import Product, ImageGallery, User_Request,UserRequest_Truck
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+
+current_datetime = datetime.now()
+formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S.%f")
 
 def add_news(request):
     if request.method == 'POST':
@@ -63,37 +70,36 @@ def place_order(request):
     return render(request, "place-order.html")
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def product_detail(request, category_slug, product_slug):
     product = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
     product_gallery = ImageGallery.objects.filter(product=product)
-
+    
     driver_form = DriverForm(request.POST or None, request.FILES or None, prefix="driver")
     trailer_form = TrailerForm(request.POST or None, prefix="trailer")
     trailer_file_form = TrailerFileForm(request.POST or None, request.FILES or None, prefix="trailerfile")
     application_form = ApplicationForm(request.POST or None, prefix="application")
 
     if request.method == 'POST':
-        if driver_form.is_valid() and trailer_form.is_valid() and trailer_file_form.is_valid() and application_form.is_valid():
-            driver = driver_form.save(commit=False)
-            driver.user = request.user  # Assign the logged-in user
-            driver.save()
-            
-            trailer = trailer_form.save()
+        dname = request.POST.get('dname')
+        dpass = request.POST.get('dpassport')
+        dletsence = request.POST.get('dletsence')
+        dimg = request.FILES.get('dimg')
+        url1 = f'static/images/{dname}.jpg'
+        handle_upload(dimg, url1)
+        crd = request.POST.get('crd')
+        ctype = request.POST.get('ctype')
+        cedangi = request.POST.get('cedangi')
+        cmadename = request.POST.get('cmadename')
+        ccefno = request.POST.get('ccefno')
+        cimg = request.FILES.get('cimg')
+        url2 = f'static/images/{crd}.jpg'
+        handle_upload(cimg, url2)
 
-            trailer_file = trailer_file_form.save(commit=False)
-            trailer_file.trailer = trailer
-            trailer_file.save()
-            
-            application = application_form.save(commit=False)
-            application.driver = driver
-            application.trailer = trailer
-            application.product = product
-            application.save()
-            
-            messages.success(request, 'Application submitted successfully!')
-            return redirect(product.get_url())
-        else:
-            messages.error(request, 'Error in form submission. Please check the details.')
+        user_request = User_Request(dname=dname, dpass=dpass, dletsence=dletsence, url1=url1)
+        user_request.save()
+        user_request = UserRequest_Truck(crd=crd, ctype=ctype, cedangi=cedangi,cmadename=cmadename,ccefno=ccefno,url2=url2,dpass=dpass)
+        user_request.save()
 
     context = {
         'single_product': product,
@@ -105,7 +111,6 @@ def product_detail(request, category_slug, product_slug):
     }
     
     return render(request, 'product-detail.html', context)
-
 
 def news(request):
     news_items = News.objects.all().order_by('-created_date')
@@ -121,11 +126,27 @@ def admin_category(request):
 
 def admin_zar(request):
     news_items = Product.objects.all()
+    if request.method == "POST":
+        zname = request.POST.get('zname')
+        desc = request.POST.get('ta_description')
+        price = request.POST.get('price')
+        zimg = request.FILES.get('image')
+        ztype = request.POST.get('ztype')
+        text_slug = translit(zname, 'ru', reversed=True)
+        slug = text_slug.replace(" ", "")
+        url = f'media/photos/products/{slug}.jpg'
+        handle_upload(zimg, url)
+        with sql.connect('db.sqlite3') as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO 'store_app_product' (product_name, slug, description, price, images,stock,is_available,created_date,modified_date,category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (zname, slug, desc, price, url, 1, 0, formatted_datetime, 0, ztype))
+            con.commit()
     return render(request,'admin/zar.html',{'news_items': news_items})
 
-def admin_truck(request):
-    news_items = Trailer.objects.all().order_by('-created_date')
-    return render(request,'admin/trailer.html',{'news_items': news_items})
+def admin_request(request):
+    user_items = User_Request.objects.all()
+    news_items = user_items
+    truck = UserRequest_Truck.objects.all()
+    return render(request,'admin/request.html',{'news_items': news_items,'context':truck})
 
 def about(request):
     return render(request,'store/about.html')
